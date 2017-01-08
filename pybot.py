@@ -3,8 +3,9 @@ from io import StringIO
 import sys, time, pydoc, os
 
 server = "chat.freenode.net"
-channel = "#irc_test"
-botnick = "a_crazy_bot"
+channels = ["#irc_test"]
+
+botnick = "crazypybot"
 
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 irc.connect((server, 6667))
@@ -13,9 +14,8 @@ irc.send(bytes("NICK {}\r\n".format(botnick),"utf8"))
 irc.send(bytes("PRIVMSG nickserv :iNOOPE\r\n","utf8"))
 irc.send(bytes("PRIVMSG nickserv :identify {}\r\n".format(sys.argv[1]),"utf8"))
 sys.argv[1]=0
-time.sleep(2)
-irc.send(bytearray("JOIN {}\r\n".format(channel),"utf8"))
-
+time.sleep(20)
+irc.send(bytearray("JOIN {}\r\n".format(channels[0]),"utf8"))
 
 class Capturing(list):
 
@@ -47,6 +47,12 @@ def bot():
             who = msg[1:msg.find("!")]
             cmd = msg[msg.find(" :")+2:].strip()
             channel = msg[msg.find("#"):msg.find(" :")]
+
+            cmd = cmd.replace("os.dup2","")
+            cmd = cmd.replace("socket","")
+            cmd = cmd.replace("subprocess","")
+            cmd = cmd.replace("while","While")
+            cmd = cmd.replace("fork()","")
 
             if(cmd[0] == ">"):
                 show_error = True
