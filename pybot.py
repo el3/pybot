@@ -14,7 +14,7 @@ irc.send(bytes("NICK {}\r\n".format(botnick),"utf8"))
 irc.send(bytes("PRIVMSG nickserv :iNOOPE\r\n","utf8"))
 irc.send(bytes("PRIVMSG nickserv :identify {}\r\n".format(sys.argv[3]),"utf8"))
 sys.argv[3]=0
-time.sleep(5)
+time.sleep(20)
 irc.send(bytearray("JOIN {}\r\n".format(channels[0]),"utf8"))
 
 class Capturing(list):
