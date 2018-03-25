@@ -12,7 +12,7 @@ irc.connect((server, 6667))
 irc.send(bytes("USER {user} {user} {user} :This is a fun bot!\r\n".format(user=botnick),"utf8"))
 irc.send(bytes("NICK {}\r\n".format(botnick),"utf8"))
 irc.send(bytes("PRIVMSG nickserv :iNOOPE\r\n","utf8"))
-irc.send(bytes("PRIVMSG nickserv :identify {}\r\n".format(sys.argv[3]),"utf8"))
+irc.send(bytes("PRIVMSG nickserv :identify {}\r\n".format(sys.argv[2]),"utf8"))
 sys.argv[3]=0
 time.sleep(20)
 irc.send(bytearray("JOIN {}\r\n".format(channels[0]),"utf8"))
