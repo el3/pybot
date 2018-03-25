@@ -2,6 +2,8 @@ import socket
 from io import StringIO
 import sys, time, pydoc, os
 
+a = "test"
+
 server = "chat.freenode.net"
 channels = [sys.argv[3]]
 
