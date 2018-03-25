@@ -2,8 +2,6 @@ import socket
 from io import StringIO
 import sys, time, pydoc, os
 
-a = "test"
-
 server = "chat.freenode.net"
 channels = [sys.argv[3]]
 
@@ -42,7 +40,7 @@ def output_help_to_file(request):
 tell = {}
 
 def bot():
-    globals_dict = {}
+    globals_dict = {"a":"test"}
     running = True
     while running:
         try:
