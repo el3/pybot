@@ -38,7 +38,7 @@ def output_help_to_file(request):
     return
 
 def bot():
-
+    globals_dict = {}
     running = True
     while running:
         msg=str(irc.recv(2040),"utf8")
@@ -71,7 +71,7 @@ def bot():
 
             try:
                 with Capturing() as output:
-                    exec(cmd)
+                    exec(cmd, globals_dict)
                 if len(output) > 0:
                     ch = ""
                     ch1= ""
