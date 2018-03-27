@@ -1,4 +1,4 @@
-#Pybot
+#Python bot
 
 Do whatever you want with it.
 
