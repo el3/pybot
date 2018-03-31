@@ -18,11 +18,6 @@ sys.argv[2]=0
 time.sleep(10)
 irc.send(bytearray("JOIN {}\r\n".format(channels[0]),"utf8"))
 
-def handler(signum, frame):
-   print("Forever is over!")
-   raise Exception("end of time")
-
-signal.signal(signal.SIGALRM, handler)
     
 class Capturing(list):
 
