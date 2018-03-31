@@ -1,4 +1,5 @@
 import socket
+import signal
 from io import StringIO
 import sys, time, pydoc, os
 
@@ -17,6 +18,12 @@ sys.argv[2]=0
 time.sleep(10)
 irc.send(bytearray("JOIN {}\r\n".format(channels[0]),"utf8"))
 
+def handler(signum, frame):
+   print("Forever is over!")
+   raise Exception("end of time")
+
+signal.signal(signal.SIGALRM, handler)
+    
 class Capturing(list):
 
     def __enter__(self):
@@ -93,6 +100,7 @@ def bot():
                         print(e)
 
                 try:
+                    signal.alarm(10)
                     with Capturing() as output:
                         exec(cmd, globals_dict)
                     if len(output) > 0:
@@ -105,6 +113,8 @@ def bot():
                         ret = "PRIVMSG {} :{ch}{}{ch1}\r\n".format(channel,out,ch=ch,ch1=ch1)
                         irc.send(bytes(ret,"utf8"))
                 except Exception as e:
+                    signal.alarm(0)
+                    print(e)
                     if(show_error):
                         ret = "PRIVMSG {} :{}\r\n".format(channel,str(e))
                         irc.send(bytes(ret,"utf8"))
