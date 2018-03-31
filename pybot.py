@@ -1,5 +1,5 @@
 import socket
-import signal
+import multiprocessing
 from io import StringIO
 import sys, time, pydoc, os
 
@@ -99,8 +99,7 @@ def bot():
                     except Exception as e:
                         print(e)
 
-                try:
-                    signal.alarm(10)
+                def run_cmd():
                     with Capturing() as output:
                         exec(cmd, globals_dict)
                     if len(output) > 0:
@@ -112,8 +111,18 @@ def bot():
                             out = out[4:]
                         ret = "PRIVMSG {} :{ch}{}{ch1}\r\n".format(channel,out,ch=ch,ch1=ch1)
                         irc.send(bytes(ret,"utf8"))
+                
+                try:
+                    p = multiprocessing.Process(target=run_cmd)
+                    p.start()
+                    p.join(5)
+
+                    if p.is_alive():
+                        print("timeout")
+                        p.terminate()
+                        p.join()
+                        
                 except Exception as e:
-                    signal.alarm(0)
                     print(e)
                     if(show_error):
                         ret = "PRIVMSG {} :{}\r\n".format(channel,str(e))
