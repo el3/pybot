@@ -42,7 +42,7 @@ def output_help_to_file(request):
 tell = {}
 
 def bot():
-    globals_dict = {"b":"test"}
+    globals_dict = multiprocessing.Manager().dict()
     running = True
     while running:
         try:
