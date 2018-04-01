@@ -43,6 +43,7 @@ tell = {}
 
 def bot():
     globals_dict = {"b":"test"}
+    shared = multiprocessing.Array(globals_dict)
     running = True
     while running:
         try:
@@ -95,7 +96,7 @@ def bot():
                     except Exception as e:
                         print(e)
 
-                def run_cmd():
+                def run_cmd(global_dict):
                     with Capturing() as output:
                         exec(cmd, globals_dict)
                     if len(output) > 0:
@@ -109,7 +110,7 @@ def bot():
                         irc.send(bytes(ret,"utf8"))
                 
                 try:
-                    p = multiprocessing.Process(target=run_cmd)
+                    p = multiprocessing.Process(target=run_cmd, args=(shared,))
                     p.start()
                     p.join(5)
 
