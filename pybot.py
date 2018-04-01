@@ -97,7 +97,7 @@ def bot():
 
                 def run_cmd(globals_dict):
                     with Capturing() as output:
-                        exec(cmd, globals_dict)
+                        exec(cmd, dict(globals_dict))
                     if len(output) > 0:
                         ch = ""
                         ch1= ""
