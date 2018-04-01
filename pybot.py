@@ -43,7 +43,6 @@ tell = {}
 
 def bot():
     globals_dict = {"b":"test"}
-    shared = multiprocessing.Array(globals_dict)
     running = True
     while running:
         try:
@@ -110,7 +109,7 @@ def bot():
                         irc.send(bytes(ret,"utf8"))
                 
                 try:
-                    p = multiprocessing.Process(target=run_cmd, args=(shared,))
+                    p = multiprocessing.Process(target=run_cmd, args=(global_dict,))
                     p.start()
                     p.join(5)
 
