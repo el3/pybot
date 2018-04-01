@@ -32,7 +32,7 @@ class Capturing(list):
 
 
 def output_help_to_file(request):
-    f = file("help.txt", 'w')
+    f = open("help.txt", 'w')
     sys.stdout = f
     pydoc.help(request)
     f.close()
@@ -84,6 +84,7 @@ def bot():
                     cmd = cmd.replace(">","",1)
 
                 if cmd[0:5] == "help(":
+                    print("help")
                     req = cmd[5:cmd.find(")")]
                     try:
                         output_help_to_file(req)
