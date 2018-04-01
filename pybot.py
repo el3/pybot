@@ -95,7 +95,7 @@ def bot():
                     except Exception as e:
                         print(e)
 
-                def run_cmd(global_dict):
+                def run_cmd(globals_dict):
                     with Capturing() as output:
                         exec(cmd, globals_dict)
                     if len(output) > 0:
@@ -109,7 +109,7 @@ def bot():
                         irc.send(bytes(ret,"utf8"))
                 
                 try:
-                    p = multiprocessing.Process(target=run_cmd, args=(global_dict,))
+                    p = multiprocessing.Process(target=run_cmd, args=(globals_dict,))
                     p.start()
                     p.join(5)
 
