@@ -96,7 +96,7 @@ def bot():
                     except Exception as e:
                         print(e)
 
-                def run_cmd():
+                try:
                     with Capturing() as output:
                         exec(cmd, globals_dict)
                     if len(output) > 0:
@@ -108,9 +108,7 @@ def bot():
                             out = out[4:]
                         ret = "PRIVMSG {} :{ch}{}{ch1}\r\n".format(channel,out,ch=ch,ch1=ch1)
                         irc.send(bytes(ret,"utf8"))
-                
-                try:
-                    run_cmd()                        
+                       
                 except Exception as e:
                     print(e)
                     if(show_error):
