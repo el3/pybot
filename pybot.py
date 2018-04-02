@@ -42,6 +42,7 @@ def output_help_to_file(request):
 tell = {}
 
 def bot():
+    globals_dict = {}
     running = True
     while running:
         try:
@@ -121,19 +122,20 @@ def bot():
             print(e)
 
             
-def start_loop():
-    p = multiprocessing.Process(target=bot)
-    p.start()
-    p.join(5)            
+class Process()
+    def __init__(self):
+        self.process = multiprocessing.Process(target=bot)
+        self.process.start()
+        self.process.join(5)            
     
-start_loop()
+p = Process()
     
 while True:
-    if p.is_alive():
+    if p.process.is_alive():
         print("timeout")
-        p.terminate()
-        p.join()
-        start_loop()
+        p.process.terminate()
+        p.process.join()
+        p = Process()
     
     
     
