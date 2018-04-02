@@ -120,16 +120,20 @@ def bot():
         except Exception as e:
             print(e)
 
-while True:
+            
+def start_loop():
     p = multiprocessing.Process(target=bot)
     p.start()
-    p.join(5)
-
+    p.join(5)            
+    
+start_loop()
+    
+while True:
     if p.is_alive():
         print("timeout")
         p.terminate()
         p.join()
-
+        start_loop()
     
     
     
