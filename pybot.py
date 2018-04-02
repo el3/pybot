@@ -4,7 +4,7 @@ from io import StringIO
 import sys, time, pydoc, os
 
 server = "chat.freenode.net"
-channels = [sys.argv[3]]
+channels = sys.argv[3].split(",")
 
 botnick = sys.argv[1]
 
@@ -16,7 +16,8 @@ irc.send(bytes("PRIVMSG nickserv :iNOOPE\r\n","utf8"))
 irc.send(bytes("PRIVMSG nickserv :identify {}\r\n".format(sys.argv[2]),"utf8"))
 sys.argv[2]=0
 time.sleep(10)
-irc.send(bytearray("JOIN {}\r\n".format(channels[0]),"utf8"))
+for i in channels:
+    irc.send(bytearray("JOIN {}\r\n".format(i),"utf8"))
 
     
 class Capturing(list):
