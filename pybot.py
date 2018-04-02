@@ -122,7 +122,7 @@ def bot():
             print(e)
 
             
-class Process()
+class Process:
     def __init__(self):
         self.process = multiprocessing.Process(target=bot)
         self.process.start()
