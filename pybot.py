@@ -122,6 +122,7 @@ def bot():
             print(e)
 
             
+"""
 class Process:
     def __init__(self):
         self.process = multiprocessing.Process(target=bot)
@@ -129,13 +130,16 @@ class Process:
         self.process.join(5)            
     
 p = Process()
-    
+"""
+
 while True:
+    bot()
+    """
     if p.process.is_alive():
         print("timeout")
         p.process.terminate()
         p.process.join()
         p = Process()
-    
+    """
     
     
