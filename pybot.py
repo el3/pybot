@@ -42,7 +42,6 @@ def output_help_to_file(request):
 tell = {}
 
 def bot():
-    globals_dict = multiprocessing.Manager().dict()
     running = True
     while running:
         try:
@@ -95,9 +94,9 @@ def bot():
                     except Exception as e:
                         print(e)
 
-                def run_cmd(globals_dict):
+                def run_cmd():
                     with Capturing() as output:
-                        exec(cmd, dict(globals_dict))
+                        exec(cmd, globals_dict)
                     if len(output) > 0:
                         ch = ""
                         ch1= ""
@@ -109,15 +108,7 @@ def bot():
                         irc.send(bytes(ret,"utf8"))
                 
                 try:
-                    p = multiprocessing.Process(target=run_cmd, args=(globals_dict,))
-                    p.start()
-                    p.join(5)
-
-                    if p.is_alive():
-                        print("timeout")
-                        p.terminate()
-                        p.join()
-                        
+                    run_cmd()                        
                 except Exception as e:
                     print(e)
                     if(show_error):
@@ -130,4 +121,15 @@ def bot():
             print(e)
 
 while True:
-    bot()
+    p = multiprocessing.Process(target=bot)
+    p.start()
+    p.join(5)
+
+    if p.is_alive():
+        print("timeout")
+        p.terminate()
+        p.join()
+
+    
+    
+    
