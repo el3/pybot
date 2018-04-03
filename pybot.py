@@ -1,4 +1,4 @@
-import socket
+import socket, signal
 import multiprocessing
 from io import StringIO
 import sys, time, pydoc, os
@@ -16,9 +16,23 @@ irc.send(bytes("PRIVMSG nickserv :iNOOPE\r\n","utf8"))
 irc.send(bytes("PRIVMSG nickserv :identify {}\r\n".format(sys.argv[2]),"utf8"))
 sys.argv[2]=0
 time.sleep(10)
+
 for i in channels:
     irc.send(bytearray("JOIN {}\r\n".format(i),"utf8"))
 
+    
+class timeout:
+    def __init__(self, seconds=1, error_message='Timeout'):
+        self.seconds = seconds
+        self.error_message = error_message
+    def handle_timeout(self, signum, frame):
+        raise TimeoutError(self.error_message)
+    def __enter__(self):
+        signal.signal(signal.SIGALRM, self.handle_timeout)
+        signal.alarm(self.seconds)
+    def __exit__(self, type, value, traceback):
+        signal.alarm(0)
+    
     
 class Capturing(list):
 
@@ -39,6 +53,7 @@ def output_help_to_file(request):
     f.close()
     sys.stdout = sys.__stdout__
     return
+
 
 tell = {}
 
@@ -98,7 +113,8 @@ def bot():
 
                 try:
                     with Capturing() as output:
-                        exec(cmd, globals_dict)
+                        with Timeout(5):
+                            exec(cmd, globals_dict)
                     if len(output) > 0:
                         ch = ""
                         ch1= ""
@@ -120,25 +136,6 @@ def bot():
         except Exception as e:
             print(e)
 
-            
-"""
-class Process:
-    def __init__(self):
-        self.process = multiprocessing.Process(target=bot)
-        self.process.start()
-        self.process.join(5)            
-    
-p = Process()
-"""
 
 while True:
     bot()
-    """
-    if p.process.is_alive():
-        print("timeout")
-        p.process.terminate()
-        p.process.join()
-        p = Process()
-    """
-    
-    
