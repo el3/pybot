@@ -3,8 +3,6 @@ import multiprocessing
 from io import StringIO
 import sys, time, pydoc, os
 import select
-
-mysocket.setblocking(0)
     
 server = "chat.freenode.net"
 channels = sys.argv[3].split(",")
