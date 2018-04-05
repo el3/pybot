@@ -55,6 +55,7 @@ def bot():
         try:
             msg=str(irc.recv(2040),"utf8")
         except:
+            t.value = int(time.time())
             continue
         try:
             nick = msg.split("!")[0][1:]
