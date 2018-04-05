@@ -4,7 +4,7 @@ from io import StringIO
 import sys, time, pydoc, os
 import select
     
-server = "chat.freenode.net"
+server = "130.185.232.126" #"chat.freenode.net"
 channels = sys.argv[3].split(",")
 
 botnick = sys.argv[1]
