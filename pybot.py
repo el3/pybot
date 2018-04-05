@@ -1,7 +1,9 @@
 import socket
 from io import StringIO
 import sys, time, pydoc, os
-    
+from multiprocessing import Process, Value
+
+
 server = "chat.freenode.net"
 channels = sys.argv[3].split(",")
 
@@ -14,7 +16,7 @@ irc.send(bytes("USER {user} {user} {user} :This is a fun bot!\r\n".format(user=b
 irc.send(bytes("NICK {}\r\n".format(botnick),"utf8"))
 irc.send(bytes("PRIVMSG nickserv :iNOOPE\r\n","utf8"))
 irc.send(bytes("PRIVMSG nickserv :identify {}\r\n".format(sys.argv[2]),"utf8"))
-irc.settimeout(5)
+irc.settimeout(2)
 sys.argv[2]=0
 time.sleep(10)
 
@@ -125,7 +127,16 @@ def bot():
                 irc.send(bytes('PONG {}\r\n'.format(msg.split()[1]),"utf8"))
         except Exception as e:
             print(e)
+        t.value = int(time.time())
 
+
+t = Value("i",int(time.time()))
+p = Process(target=bot)
+p.start()
 
 while True:
-    bot()
+    if int(time.time()) - t.value > 10:
+        p.terminate()
+        p = Process(target=bot)
+        p.start()
+    time.sleep(2)
