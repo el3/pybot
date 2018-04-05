@@ -2,13 +2,19 @@ import socket, signal
 import multiprocessing
 from io import StringIO
 import sys, time, pydoc, os
+import select
 
+mysocket.setblocking(0)
+    
 server = "chat.freenode.net"
 channels = sys.argv[3].split(",")
 
 botnick = sys.argv[1]
 
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+irc.setblocking(0)
+
 irc.connect((server, 6667))
 irc.send(bytes("USER {user} {user} {user} :This is a fun bot!\r\n".format(user=botnick),"utf8"))
 irc.send(bytes("NICK {}\r\n".format(botnick),"utf8"))
@@ -60,9 +66,18 @@ tell = {}
 def bot():
     globals_dict = {}
     running = True
+
+    ready = select.select([irc], [], [], 5)
+    
     while running:
+        print("loop")
         try:
-            msg=str(irc.recv(2040),"utf8")
+
+            if ready[0]:
+                msg=str(irc.recv(2040),"utf8")
+            else:
+                continue
+                
             nick = msg.split("!")[0][1:]
             
             if msg.find("JOIN #gentoo-weed") != -1 or nick in tell:
