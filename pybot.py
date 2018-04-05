@@ -147,4 +147,4 @@ while True:
         p.terminate()
         p = Process(target=bot)
         p.start()
-    time.sleep(2)
+    time.sleep(1)
