@@ -46,9 +46,10 @@ def output_help_to_file(request):
 
 
 tell = {}
+globals_dict = {}
 
 def bot():
-    globals_dict = {}
+    
     running = True
     
     while running:
@@ -111,7 +112,7 @@ def bot():
 
                 try:
                     with Capturing() as output:
-                        exec(cmd, globals())
+                        exec(cmd, globals_dict)
                     if len(output) > 0:
                         ch = ""
                         ch1= ""
