@@ -2,7 +2,6 @@ import socket, signal
 import multiprocessing
 from io import StringIO
 import sys, time, pydoc, os
-import select
     
 server = "chat.freenode.net"
 channels = sys.argv[3].split(",")
@@ -16,6 +15,7 @@ irc.send(bytes("USER {user} {user} {user} :This is a fun bot!\r\n".format(user=b
 irc.send(bytes("NICK {}\r\n".format(botnick),"utf8"))
 irc.send(bytes("PRIVMSG nickserv :iNOOPE\r\n","utf8"))
 irc.send(bytes("PRIVMSG nickserv :identify {}\r\n".format(sys.argv[2]),"utf8"))
+irc.settimeout(5)
 sys.argv[2]=0
 time.sleep(10)
 
@@ -62,17 +62,11 @@ tell = {}
 def bot():
     globals_dict = {}
     running = True
-
-    ready = select.select([irc], [], [], 5)
     
     while running:
         print("loop")
         try:
-
-            if ready[0]:
-                msg=str(irc.recv(2040),"utf8")
-            else:
-                continue
+            msg=str(irc.recv(2040),"utf8")
                 
             nick = msg.split("!")[0][1:]
             
