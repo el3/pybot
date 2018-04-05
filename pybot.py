@@ -4,16 +4,14 @@ from io import StringIO
 import sys, time, pydoc, os
 import select
     
-server = "130.185.232.126" #"chat.freenode.net"
+server = "chat.freenode.net"
 channels = sys.argv[3].split(",")
 
 botnick = sys.argv[1]
 
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-irc.setblocking(0)
-
 irc.connect((server, 6667))
+irc.setblocking(0)
 irc.send(bytes("USER {user} {user} {user} :This is a fun bot!\r\n".format(user=botnick),"utf8"))
 irc.send(bytes("NICK {}\r\n".format(botnick),"utf8"))
 irc.send(bytes("PRIVMSG nickserv :iNOOPE\r\n","utf8"))
