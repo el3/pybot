@@ -52,10 +52,11 @@ def bot():
     running = True
     
     while running:
-        print("loop")
         try:
             msg=str(irc.recv(2040),"utf8")
-                
+        except:
+            continue
+        try:
             nick = msg.split("!")[0][1:]
             
             if msg.find("JOIN #gentoo-weed") != -1 or nick in tell:
@@ -87,7 +88,10 @@ def bot():
                     else:
                         tell[nick] = "Hi {}. {} asked me to tell you, {}...".format(nick,who,message)
                     print(tell)
-                
+                    
+                if(cmd[0:6] == "exit()"):
+                    t.value = -1
+                    
                 if(cmd[0] == ">"):
                     show_error = True
                     cmd = cmd.replace(">","",1)
@@ -135,6 +139,9 @@ p = Process(target=bot)
 p.start()
 
 while True:
+    if t.value == -1:
+        p.terminate()
+        exit()
     if int(time.time()) - t.value > 10:
         p.terminate()
         p = Process(target=bot)
