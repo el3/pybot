@@ -61,11 +61,11 @@ def bot():
         try:
             nick = msg.split("!")[0][1:]
             
-            if msg.find("JOIN #gentoo-weed") != -1 or nick in tell:
+            if msg.find("JOIN ") != -1 or nick in tell:
                 print(tell)
                 message = tell[nick]
                 del tell[nick]
-                ret = "PRIVMSG {} :{}\r\n".format("#gentoo-weed",message[:448])
+                ret = "PRIVMSG {} :{}\r\n".format("",message[:448])
                 irc.send(bytes(ret,"utf8"))
 
             show_error = False
